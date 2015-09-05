@@ -1,0 +1,64 @@
+/*
+	much much faster than brute force.	
+	gives sigsev on SPOJ since declaring array of size 10^9 not allowed
+*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<math.h>
+int main()
+{
+	int t;
+	int m, n, j, l, b, size;
+	int nprev=0, flag=0;
+	int *arr, root;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%d %d",&b,&n);
+		if(n<=nprev)
+			flag=1;
+		if(!flag)
+		{
+			size=n+1;
+			free(arr);
+			arr=(int*)malloc(size*sizeof(int));
+			memset(arr,0,sizeof(arr));
+			//sieve optimisation outer loop goes to root(size) only!
+			root=sqrt(n);
+			//edge case
+			arr[1]=1;
+			for(j=2; j<root; j++)
+			{
+				if(arr[j]==1)
+					continue;	
+				m=j;
+				//sieve optimisation instead of m*=2, do m*=m 
+				//better implementation of sieve
+				for(m*=m; m<=size; m+=j)
+				{
+					arr[m]=1;
+				}
+			}
+		}
+		for(j=b; j<size; j++)
+			if(arr[j]==0)
+				printf("%d\n",j);
+		nprev=n;
+		flag=0;
+	}
+	return 0;
+}
+
+
+/*
+				//sieve optimisation instead of m*=2, do m*=m 
+				for(m*=m, l=j+1; l<size; l++)
+				{
+					if(l==m)
+					{
+						arr[l]=1;
+						m+=j;
+					}
+				}
+*/

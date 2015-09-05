@@ -1,0 +1,7 @@
+class LinkedListException extends Exception{}
+class SearchException extends LinkedListException{}
+class InsertionException extends LinkedListException{}
+class LinkedListEmptyException extends SearchException{}
+class KeyNotFoundException extends SearchException{}
+class KeyAlreadyPresentException extends InsertionException{}
+

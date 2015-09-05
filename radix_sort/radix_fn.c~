@@ -1,0 +1,204 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct ll
+{
+	int value;
+	struct ll *next;
+};
+typedef struct ll NODE;
+typedef struct
+{
+	int numNodes;
+	NODE *next;
+} HEAD;
+
+HEAD *createList();
+void printList(HEAD*);
+void insertAtTail(HEAD*,int);
+int deleteFromTail(HEAD*);
+int deleteFromHead(HEAD *head);
+
+HEAD* createList()
+{
+	HEAD *head;
+	head= (HEAD*)malloc(sizeof(HEAD));
+	head->numNodes=0;
+	head->next=NULL;
+	return head;
+}
+
+void printList(HEAD *head)
+{
+	NODE *temp = head->next;
+	if(temp==NULL)
+		printf("\nList is Empty.\n");
+	else
+	{
+		int pos=1;
+		while(temp!=NULL)
+		{
+			printf("\n<%d>\t%d",pos++,temp->value);
+			temp=temp->next;
+		}
+		printf("\n");
+	}
+}
+
+int deleteFromHead(HEAD *head)
+{
+	if(head->next==NULL)
+	{
+		printf("\nList is Empty, cannot delete.\n");
+		return -1;
+	}
+	else{
+		int val=head->next->value;
+		NODE *temp=head->next;
+		head->next=temp->next;
+		free(temp);
+		head->numNodes-=1;
+		return val;
+	}
+}
+
+void insertAtTail(HEAD* head,int num)
+{
+	NODE *node=(NODE*)malloc(sizeof(NODE));
+	node->value=num;
+	node->next=NULL;
+	if(head->next==NULL)
+		head->next=node;
+	else{
+		NODE *temp=head->next;
+		while(temp->next!=NULL)		
+			temp=temp->next;
+		temp->next=node;
+	}
+	head->numNodes+=1;
+}
+
+int deleteFromTail(HEAD *head)
+{
+	if(head->next==NULL)
+	{
+		printf("\nList is Empty, cannot delete.\n");
+		return -1;
+	}
+	else{
+	int num;
+	NODE *temp = head->next;
+	while(temp->next->next!=NULL)
+		temp=temp->next;
+	num=temp->next->value;
+	free(temp->next);
+	temp->next=NULL;
+	head->numNodes-=1;
+	return num;
+	}
+}
+
+int max_dig(int *arr,int size)
+{
+	int j, count=0,max;
+	max=arr[0];
+	for(j=1; j<size; j++)
+		if(arr[j]>max)
+			max=arr[j];
+	while(max!=0)
+	{
+		max/=10;
+		count++;
+	}
+	return count;
+}
+void radix(int *inp,int size,int base)
+{
+	int power,j,dig,k;
+	int passes=max_dig(inp,size);
+	printf("\nPASSES=%d",passes);
+	HEAD *arr[10]={NULL};
+
+	//each digit 0,1,2...base will have a 'head' pointing to its empty linked list
+	for(j=0; j<base; j++)
+		arr[j]=createList();
+	//pass1
+	printf("\n--------------------------------PASS1");
+	//insert according to LSD in corresponding digit's linked list
+	for(j=0; j<size; j++)
+	{
+		dig=inp[j]%10;
+		insertAtTail(arr[dig],inp[j]);
+	}
+	//print
+	for(j=0; j<base; j++){
+		printf("\n-----------------%d",j);
+		printList(arr[j]);
+		printf("\n");
+	}
+
+	HEAD *arr2[10]={NULL};
+
+	for(k=1,power=10; k<passes; k++,power*=10)
+	{
+		printf("\n--------------------------------PASS%d",k);
+		int temp;
+		//create new set of lists for all base digits
+		for(j=0; j<base; j++)
+			arr2[j]=createList();
+		//insert into new lists elements removed from previous lists, insert according to next LSD
+		for(j=0; j<base; j++)
+		{
+			int val=deleteFromHead(arr[j]);
+			temp=val;
+			if(val!=-1)
+			{
+				j--;//to ensure that all numbers in the list against a digit are taken
+				temp/=power;
+				dig=temp%power;
+				insertAtTail(arr2[dig],val);
+			}		
+		}
+		//print the linked lists of all digits
+		for(j=0; j<base; j++){
+			printf("-----------------%d",j);
+			printList(arr2[j]);
+			printf("\n");
+		}	
+		//free previous set of linked lists
+		for(j=0; j<base; j++)
+			free(arr[j]);
+		//assign current lists to pointers of previous set of lists 
+		for(j=0; j<base; j++)
+			arr[j]=arr2[j];
+	}
+	//free the final set of lists
+	for(j=0; j<base; j++)
+		free(arr2[j]);	
+
+	//generate output array;	
+	int l=0;
+	for(j=0; j<base; j++)
+	{
+		int val=deleteFromHead(arr2[j]);
+		if(val!=-1)
+		{
+			j--;//to ensure that all nos. int the list against a digit are taken
+			inp[l++]=val;
+		}		
+	}
+
+}
+
+int main()
+{
+	int inp[]={322,123,456,789,2,54,999,111,222,333};	
+	int size=10,base=2,j;
+	radix(inp,size,base);	
+	for(j=0; j<size; j++)
+	{
+		printf("\n%d",inp[j]);
+	}
+	printf("\n");
+	return 0;
+}

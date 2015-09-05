@@ -1,0 +1,17 @@
+package testpack;
+public class Person
+{
+	private String name;
+	private int age;
+	public void set(String nm, int age_inp)
+	{	
+		name=nm;
+		age=age_inp;
+	}
+	public String getname()
+	{	return name;
+	}
+	public int getage()
+	{	return age; 
+	}
+}

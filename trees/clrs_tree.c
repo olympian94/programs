@@ -1,0 +1,314 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct _tree{
+	struct _tree *left, *right, *p;
+	int key;
+	void *data;
+};
+typedef struct _tree node;
+typedef struct _root{
+	node *root;
+}tree;
+
+
+node* search(node *x, int key)
+{
+	while(x!=NULL&&x->key!=key)
+	{	
+		if(key>x->key)
+			x=x->right;
+		else
+			x=x->left;
+	}
+	return x;
+}
+
+node * min(node *x)
+{
+	while(x->left!=NULL)
+		x=x->left;
+	return x;
+}
+
+node * max(node *x)
+{
+	while(x->right!=NULL)
+		x=x->right;
+	return x;
+}
+
+/*
+	Successor(x)=node with the smallest key that is greater than x.key
+	case 1: x.right!=NULL
+		successor(x)=left most node in rt subtree of x
+	case 2: x.right=NULL
+		successor(x) is the lowest ancestor of x which whoose left child
+		is also an ancestor of x
+		(left child condition ensures the successor node has key just greater than x.key)
+*/
+node * successor(node *x)
+{
+	if(x->right!=NULL)
+		return min(x->right);
+	node *y=x->p;
+	while(y!=NULL&&	x==y->right)
+	{
+		x=y;
+		y=y->p;
+	}
+	return y;
+}
+/*
+	Predecessor(x)=node with the grestest key that is smaller than x.key
+	case 1: x.left!=NULL
+		predecessor(x)=right most node in left subtree of x
+	case 2: x.right=NULL
+		predecessor(x) is the lowest ancestor of x which whoose right child
+		is also an ancestor of x
+		(left child condition ensures the predecessor node has key just greater than x.key)
+*/
+
+node * predecessor(node *x)
+{
+	if(x->left!=NULL)
+		return max(x->left);
+	node *y=x->p;
+	while(y!=NULL&& x==y->left)
+	{
+		x=y;
+		y=y->p;
+	}
+	return y;
+}
+
+void insert(tree *t,node *z)
+{
+	node *temp=NULL;
+	node *tree_ptr=t->root;
+	while(tree_ptr!=NULL)
+	{
+		temp=tree_ptr;
+		if(z->key>tree_ptr->key)
+			tree_ptr=tree_ptr->right;
+		else
+			tree_ptr=tree_ptr->left;			
+	}
+	z->p=temp;
+	if(temp==NULL)
+		t->root=z;
+	else if(z->key>temp->key)	
+		temp->right=z;
+	else 	temp->left=z;
+}
+
+node* newnode(int key, void *data)
+{
+	node* z=malloc(sizeof(node));
+	z->key=key;
+	z->p=NULL;
+	z->right=NULL;
+	z->left=NULL;
+	z->data=data;
+	return z;	
+}
+
+void inorder(node *q)
+{
+	if(q!=NULL)
+	{
+		inorder(q->left);
+		printf("\n(%d)",q->key);
+		inorder(q->right);
+	}
+}
+
+void preorder(node *q)
+{
+	if(q!=NULL)
+	{
+		printf("\n(%d)",q->key);
+		preorder(q->left);
+		preorder(q->right);
+	}
+}
+
+void postorder(node *q)
+{
+	if(q!=NULL)
+	{
+		postorder(q->left);
+		postorder(q->right);
+		printf("\n(%d)",q->key);
+	}
+}
+
+void delete(tree* t,int key)
+{
+	node *ele=search(t->root,key);	
+	node *parent=ele->p;
+	if(ele==NULL)
+		printf("\nElement not found, cannot delete.");
+	else{
+		//case 1: node to be deleted has bo children
+		if(ele->right==NULL&&ele->left==NULL)
+		{
+			if(parent!=NULL)
+			{
+				if(parent->left==ele)
+					parent->left=NULL;//just setting NULL, node is 'free'd later
+				
+				else
+					parent->right=NULL;
+			}
+			else
+				//executed only when the root is the only node and it is to be deleted
+				t->root=NULL;
+			free(ele);
+		}
+		//case 2: node to be deleted has only one child
+		else if(ele->right==NULL||ele->left==NULL)
+		{
+			node *child_ptr;
+			if(ele->right==NULL)			
+				child_ptr=ele->left;
+			else
+				child_ptr=ele->right;
+			if(parent!=NULL){
+				if(parent->right==ele)
+					parent->right=child_ptr;
+				else
+					parent->left=child_ptr;
+			}
+			else{
+				t->root=child_ptr;
+				child_ptr->p=NULL;
+			}
+			free(ele);
+		}
+		//case 3: node to be deleted has two children
+		else
+		{
+			node *succ=successor(ele);
+			//tree need not be specified since the internal links will be unique to each tree.
+			node *left_child=ele->left;
+			node *right_child=ele->right;
+			succ->left=left_child;
+			if(ele->right!=succ)
+			{
+				//This is executed only when ele's successor is not the right child itself.
+				succ->right=right_child;
+			}
+
+			/*
+				handle parent of successor since the successor is to replace the node to be deleted
+				NOTE: ITS IMP THAT SUCC PARENT BE HANDLED FIRST BEFORE ELE PARENT!	
+				Otherwise the 'else' block of 'Handle Ele Parent' section of code sets succ->p=NULL
+				This leads to discrepancies if it is case 3 and node to be deleted is parent node!
+				(as seen from pen-paper method)
+			*/
+			if(succ->p->right==succ)
+				succ->p->right=NULL;
+			else
+				succ->p->left=NULL;
+
+			//handle parent of node to be deleted
+			if(parent!=NULL)
+			{
+				if(parent->right==ele)
+					parent->right=succ;
+				else
+					parent->left=succ;
+			}
+			else{
+				//executed when deleting root itself, successor becomes new root
+				t->root=succ;
+				succ->p=NULL;
+			}
+			free(ele);
+
+		}
+	}
+}
+
+void print_all_orders(tree *t)
+{
+	if(t->root!=NULL){
+		printf("\nPRINTING ALL ORDERS-----------------------------");
+		printf("\n#INORDER");
+		inorder(t->root);
+		printf("\n#PREORDER");
+		preorder(t->root);
+		printf("\n#POSTORDER");
+		postorder(t->root);
+		printf("\n");
+	}
+	else
+		printf("\nTree is empty. Cannot delete.");
+}
+
+void delete_tree(tree *t)
+{
+	while(t->root!=NULL)
+		delete(t,t->root->key);	
+}
+
+int main()
+{
+	tree *tree1;
+	tree1->root=NULL;
+	
+	node *z;
+	z=newnode(15,(int*)15);
+	insert(tree1,z);
+
+	z=newnode(7,(int*)6);
+	insert(tree1,z);
+
+	z=newnode(16,(int*)18);
+	insert(tree1,z);
+
+	z=newnode(3,(int*)3);
+	insert(tree1,z);
+
+	z=newnode(10,(int*)7);
+	insert(tree1,z);
+
+	z=newnode(4,(int*)17);
+	insert(tree1,z);
+
+	z=newnode(8,(int*)20);
+	insert(tree1,z);
+
+	z=newnode(14,(int*)2);
+	insert(tree1,z);
+
+	z=newnode(13,(int*)4);
+	insert(tree1,z);
+
+	z=newnode(11,(int*)13);
+	insert(tree1,z);
+
+	print_all_orders(tree1);
+
+	//delete entire tree
+	delete_tree(tree1);
+	print_all_orders(tree1);
+/*	
+	//deleting node itself
+	delete(tree1,15);
+	print_all_orders(tree1);
+
+	//delete case 3
+	delete(tree1,10);
+	print_all_orders(tree1);
+
+	//delete case 2
+	delete(tree1,14);
+	print_all_orders(tree1);
+	//delete case 1
+	delete(tree1,8);
+	print_all_orders(tree1);
+*/
+	return 0;
+}	

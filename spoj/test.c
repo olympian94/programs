@@ -1,0 +1,15 @@
+#include<stdio.h>
+int main()
+{
+	long inp=0, count=0;
+	long arr[2000];
+	int j;
+	while(inp!=42)
+	{
+		scanf("%ld",&inp);
+		arr[count++]=inp;
+	}
+	for(j=0; j<count-1; j++)
+		printf("\n%ld",arr[j]);
+}
+

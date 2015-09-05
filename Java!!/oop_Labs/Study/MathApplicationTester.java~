@@ -1,0 +1,29 @@
+package Study;
+import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class MathApplicationTester {
+	
+   MathApplication mathApplication;
+   CalculatorService calcService;
+   @Before
+   public void setUp()
+   {
+	mathApplication = new MathApplication();
+	calcService = EasyMock.createMock(CalculatorService.class);
+	mathApplication.setCalculatorService(calcService);
+   }
+   @Test
+   public void testAdd(){
+      //add the behavior of calc service to add two numbers
+      EasyMock.expect(calcService.add(10.0,20.0)).andReturn(30.00);
+
+      //activate the mock
+      EasyMock.replay(calcService);	
+		
+      //test the add functionality
+      Assert.assertEquals(mathApplication.add(10.0, 20.0),30.0,0);
+   }
+}

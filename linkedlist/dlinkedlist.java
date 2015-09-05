@@ -1,0 +1,216 @@
+//Doubly Linked List
+class Node
+{
+	private Object value;
+	private Node next;
+	private Node prev;
+	public Node()
+	{
+		value=null;
+		next=null;
+		prev=null;
+	}
+	public void setValue(Object value_inp)
+	{
+		value=value_inp;
+	}
+	public void setNext(Node next_inp)
+	{
+		next=next_inp;
+	}
+	public void setPrev(Node prev_inp)
+	{
+		prev=prev_inp;
+	}
+	public Node getNext()
+	{	return next;
+	}
+	public Node getPrev()
+	{	return prev;
+	}
+	public Object getValue()
+	{	return value;
+	}
+}
+
+class DoublyLinkedList
+{
+	private Node head;
+	private int numNodes;
+	public DoublyLinkedList()
+	{
+		head=new Node();
+		numNodes=0;
+	}
+
+	public void insertAtHead(Object value)
+	{
+		Node node = new Node();
+		node.setValue(value);
+		node.setNext(head.getNext());
+		head.setNext(node);
+		node.setPrev(head);
+		if(node.getNext()!=null)
+		node.getNext().setPrev(node);
+		numNodes+=1;
+	}
+
+	public void insertAtTail(Object value)
+	{
+		if(numNodes==0)
+			insertAtHead(value);
+		else
+		{
+			Node temp= head.getNext();
+			while(temp.getNext()!=null)
+				temp=temp.getNext();
+			Node node= new Node();
+			node.setValue(value);
+			node.setNext(null);
+			node.setPrev(temp);
+			temp.setNext(node);
+			numNodes+=1;
+		}
+	}
+
+	public void insertAtPos(Object value, int pos)	
+	{
+		if(pos==0)
+			insertAtHead(value);
+		else if(pos<0||pos>(numNodes-1))
+			System.out.println(pos+"\t is invalid position value.");
+		else{
+			Node temp= head.getNext();
+			Node node= new Node();
+			for(int j=0; j<pos-1; j++)
+				temp=temp.getNext();
+			node.setValue(value);
+			node.setNext(temp.getNext());
+			temp.setNext(node);
+			node.setPrev(temp);
+			if(node.getNext()!=null)
+				node.getNext().setPrev(node);
+			numNodes+=1;
+		}	
+	}
+
+	public Object deleteFromHead()
+	{
+		Object ret_val= null;
+		if(numNodes==0)
+			System.out.println("List empty, cannot delete element.");
+		else{
+			Node temp = head.getNext();
+			assert temp!=null : "numNodes=0 still head.getNext()=null !!";
+			ret_val=temp.getValue();
+			head.setNext(temp.getNext());
+			if(temp.getNext()!=null)
+				temp.getNext().setPrev(head);
+			numNodes-=1;
+			temp=null;
+		}
+		if(ret_val==null)
+			ret_val=new String("null");
+		return ret_val;
+	}
+
+	public Object deleteFromTail()
+	{
+		Object ret_val=null;
+		if(numNodes==0)
+			System.out.println("List empty, cannot delete element.");
+		else{
+			Node temp= head.getNext();
+			while(temp.getNext().getNext()!=null)
+				temp=temp.getNext();
+			ret_val=temp.getNext().getValue();
+			temp.setNext(null);
+			numNodes-=1;			
+		}
+
+		if(ret_val==null)
+			ret_val=new String("null");
+		return ret_val;
+	}
+
+	public Object deleteFromPos(int pos)
+	{
+		Object ret_val= null;
+		if(pos==0)
+			ret_val=deleteFromHead();
+		else if(pos==numNodes)
+			deleteFromTail();
+		else if(pos<0||pos>(numNodes-1))
+			System.out.println(pos+"\t is invalid position value.");
+		else{
+			Node temp= head.getNext();
+			for(int j=0; j<pos-1; j++)
+				temp=temp.getNext();
+			Node temp2= temp.getNext();
+			temp.setNext(temp2.getNext());
+			temp2.getNext().setPrev(temp);
+			ret_val=temp2.getValue();
+			temp2=null;
+			numNodes-=1;				
+		}
+		if(ret_val==null)
+			ret_val= new String("null");
+		return ret_val;
+	}
+	public void printList()
+	{
+		Node temp= head.getNext();
+		System.out.println("************************");
+		System.out.println("Nodes:\t"+numNodes);
+		int pos=0;
+		while(temp!=null)
+		{
+			System.out.print("("+pos+")\t"+temp.getValue().toString()+"\t");
+			pos++;
+			if(temp.getPrev()!=head)
+				System.out.print("Prev:\t"+temp.getPrev().getValue().toString());
+			System.out.println();
+			temp=temp.getNext();
+		}
+	}
+}
+
+class dlltester
+{
+	public static void main(String[] args)
+	{
+		DoublyLinkedList list = new DoublyLinkedList();
+		list.printList();
+		System.out.println("DELETED:\t"+list.deleteFromHead().toString());
+		list.insertAtHead("A1");
+		list.insertAtHead("A2");
+		list.insertAtHead("A3");
+		list.insertAtHead("A4");
+		list.insertAtHead("A5");
+		list.printList();
+		System.out.println("DELETED:\t"+list.deleteFromHead().toString());
+		System.out.println("DELETED:\t"+list.deleteFromHead().toString());
+		list.insertAtTail("T1");
+		list.insertAtTail("T2");
+		list.insertAtTail("T3");
+		list.insertAtTail("T4");
+		list.insertAtTail("T5");
+		list.printList();
+		System.out.println("DELETED:\t"+list.deleteFromHead().toString());
+		System.out.println("DELETED:\t"+list.deleteFromHead().toString());
+		list.printList();
+		System.out.println("DELETED from 0:\t"+list.deleteFromPos(0).toString());
+		list.printList();
+		System.out.println("DELETED from 9:\t"+list.deleteFromPos(9).toString());
+		list.printList();
+		System.out.println("DELETED from 3:\t"+list.deleteFromPos(3).toString());
+		list.printList();
+		list.insertAtPos("P1",0);
+		list.insertAtPos("P2",4);
+		list.insertAtPos("P3",-1);
+		list.insertAtPos("P4",10);
+		list.printList();
+		list.insertAtPos("P5",3);
+		list.printList();
+	}
+}

@@ -1,0 +1,8 @@
+FLAGS = -Wall
+
+
+shortcircuiting.s : shortcircuiting.c
+	 gcc -S shortcircuiting.c
+	 
+clean:
+	rm *.s

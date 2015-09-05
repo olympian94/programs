@@ -1,0 +1,37 @@
+#include<stdio.h>
+int main()
+{
+	int T;
+	long a, b, sum, dig, num;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%ld %ld",&a,&b);
+		num=0;
+		while(a!=0)
+		{
+			dig=a%10;
+			num= (num*10)+dig;
+			a/=10;
+		}
+		a=num;
+		num=0;
+		while(b!=0)
+		{
+			dig=b%10;
+			num= (num*10)+dig;
+			b/=10;
+		}
+		b=num;
+		a+=b;
+		num=0;
+		while(a!=0)
+		{
+			dig=a%10;
+			num= (num*10)+dig;
+			a/=10;
+		}
+		printf("%ld\n",num);
+	}
+	return 0;
+}

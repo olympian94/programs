@@ -1,0 +1,166 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct 
+{
+	int *arr;
+	int eles, size;
+	int head,tail;
+}LIST;
+
+LIST* createList(int size)
+{
+	LIST *list=(LIST*)malloc(sizeof(LIST));
+	list->arr=(int*)malloc(size*sizeof(int));
+	list->eles=0;
+	list->size=size;
+	list->head=-1;
+	list->tail=-1;
+	return list;
+}
+
+void insertAtHead(LIST *list,int val)
+{
+	if( (list->tail==list->size-1&&list->head==0)||(list->tail+1==list->head) )
+		printf("\nList full- (head=%d tail=%d). Cannot add element= %d.",list->head,list->tail,val);
+	else if(list->head==-1)
+	{
+		list->head=0;
+		list->tail=0;
+		list->arr[list->head]=val;
+		list->eles++;
+	}
+	else if(list->head==0)
+	{
+		list->head=list->size-1;
+		list->arr[list->head]=val;
+		list->eles++;
+	}
+	else
+	{
+		list->head--;
+		list->arr[list->head]=val;
+		list->eles++;
+	}
+}
+
+void insertAtTail(LIST *list,int val)
+{
+	if( (list->tail==list->size-1&&list->head==0)||(list->tail+1==list->head) )
+		printf("\nList full- (head=%d tail=%d). Cannot add element= %d.",list->head,list->tail,val);
+	else if(list->tail==-1)
+	{
+		list->head=0;
+		list->tail=0;
+		list->arr[list->tail]=val;
+		list->eles++;
+	}
+	else if(list->tail==list->size-1)
+	{
+		list->tail=0;
+		list->arr[list->tail]=val;
+		list->eles++;
+	}
+	else
+	{
+		list->tail++;
+		list->arr[list->tail]=val;
+		list->eles++;
+	}
+}
+
+int deleteFromHead(LIST *list)
+{
+	if(list->eles==0){
+		printf("\nList empty (head=%d tail= %d). Cannot delete from head.",list->head,list->tail);
+		return -1;
+	}
+	else
+	{
+		int del_val;
+		del_val=list->arr[list->head];
+		if(list->head==list->size-1)
+			list->head=0;
+		else
+			list->head++;
+		list->eles--;
+		if(list->eles==0)
+		{
+			list->head=-1;
+			list->tail=-1;
+		}		
+	}	
+}
+
+int deleteFromTail(LIST *list)
+{
+	if(list->eles==0){
+		printf("\nList empty (head=%d tail= %d). Cannot delete from Tail.",list->head,list->tail);
+		return -1;
+	}
+	else
+	{
+		int del_val;
+		del_val=list->arr[list->tail];
+		if(list->tail==0)
+			list->tail=list->size-1;
+		else
+			list->tail--;
+		list->eles--;
+		if(list->eles==0)
+		{
+			list->head=-1;
+			list->tail=-1;
+		}		
+	}	
+	
+}
+
+void printList(LIST* list)//ONLY FOR CIRCULAR LIST!
+{
+	if(list->head==-1&&list->tail==-1)
+		printf("\nList is empty. Both ptrs at -1.");
+	else
+	{
+		int j;
+		printf("\nPrinting: head=%d tail=%d",list->head,list->tail);
+		if(list->head<=list->tail)
+		{
+			for(j=list->head; j<=list->tail; j++)
+				printf("\n(%d)\t%d",j,list->arr[j]);
+		}
+		else
+		{
+			for(j=list->head; j<=list->size-1; j++)
+				printf("\n(%d)\t%d",j,list->arr[j]);
+			for(j=0; j<=list->tail; j++)
+				printf("\n(%d)\t%d",j,list->arr[j]);
+		}
+		printf("\n");
+	}
+}
+
+int main()
+{
+	LIST *list1, *list2;
+	list1=createList(10);
+	list2=createList(10);
+	int j;
+	for(j=0; j<12; j++)
+		insertAtHead(list1,j+1);
+	printList(list1);
+
+//	for(j=0; j<12; j++)
+//		insertAtTail(list2,j+1);
+//	printList(list2);
+
+	deleteFromHead(list1);
+	deleteFromHead(list1);
+	deleteFromHead(list1);
+	deleteFromHead(list1);
+	printList(list1);
+	for(j=0; j<6; j++)
+		insertAtTail(list1,99);
+	printList(list1);
+	printf("\n");
+	return 0;
+}

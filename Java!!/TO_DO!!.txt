@@ -1,0 +1,14 @@
+
+Exercise 13.3: As shown, the delimitedString method assumes only one such string per input string.
+Write a version that will pull out all the delimited strings and return an array.
+
+Exercise 13.4: Write a program to read an input string with lines of the form "type value", where type is
+one of the wrapper class names (Boolean, Character, and so on) and value is a string that the type's
+constructor can decode. For each such entry, create an object of that type with that value and add it to an
+ArrayListsee "ArrayList" on page 582. Display the final result when all the lines have been read. Assume
+a line is ended simply by the newline character '\n'.
+
+For example, the following simple algorithm squeezes out all occurrences of a character from a string:
+
+http://cs-fundamentals.com/data-structures/introduction-to-data-structures.php
+Do HackerRanch problems

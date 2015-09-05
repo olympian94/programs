@@ -1,0 +1,146 @@
+<!--?xml version="1.0"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Fred Swartz (www.fredswartz.com)">
+  <meta name="level" content="1">
+  <link rel="stylesheet" type="text/css" href="Java:%20java.math.BigInteger_files/notes.css">
+
+  <title>Java: java.math.BigInteger</title>
+</head>
+<body><div id="content">
+
+<h1 class="title"><a href="http://www.leepoint.net/notes-java/index.html">Java Notes</a></h1><h1>java.math.BigInteger</h1>
+
+<p><span class="leadin">Unbounded range</span>. To work with integers that are larger than 64 bits (the size of a <code>long</code>),
+use <code>java.math.BigInteger</code>.  This class represents unbounded 
+integers and provides a number of methods for doing arithmetic with them.
+</p>
+
+<p><span class="leadin">Overflow in standard arithmetic.</span>  The problem with arithmetic using
+ints (or longs) is that, if the value becomes too large, Java saves only the
+low order 32 (64 for longs) bits and throws the rest away.  For example, we can use the 
+maximum value that can be stored in an int as an example.  Both of the 
+following operations can't possibly fit into an int, but the arithmetic doesn't
+produce an error, it produces a result!
+</p>
+
+<table summary="" border="0"><tbody><tr><td valign="top"><pre class="example2">  1 
+  2 
+  3 
+  4 
+  5 
+  6 
+  7 
+  8 
+  9 
+ 10 
+ 11 
+ 12 
+ 13 
+ 14 
+ 15 
+ 16 
+ 17 
+ 18 
+ 19 
+ 20 
+ 21 
+</pre></td><td valign="top">
+<div class="file"><pre>//  numbers/TestOverflow.java -- Show int overflow and BigInteger solution.
+//  Fred Swartz - 2004-12-03
+
+import java.math.BigInteger;
+
+public class TestOverflow {
+    public static void main(String[] args) {
+        int bad = 2000000000;     //Close to int max value.
+        System.out.println("bad     = " + bad);
+        System.out.println("bad + 1 = " + (bad + 1));
+        System.out.println("bad * 3 = " + (bad * 3));
+        System.out.println("bad * 4 = " + (bad * 4));
+        
+        BigInteger good = BigInteger.valueOf(2000000000);
+        System.out.println();
+        System.out.println("good     = " + good);
+        System.out.println("good.add(BigInteger.ONE) = " + good.add(BigInteger.ONE));
+        System.out.println("good.multiply(BigInteger.valueOf(3)) = " + good.multiply(BigInteger.valueOf(3)));
+        System.out.println("good.multiply(BigInteger.valueOf(4)) = " + good.multiply(BigInteger.valueOf(4)));
+    }
+}
+</pre></div>
+</td></tr></tbody></table>
+
+
+
+<p>Produces this output.  If a result exceeds Integer.MAX_VALUE (2,147,483,647),
+the result will be wrong, but Java doesn't report an error!   The BigInteger results
+are correct.  But you do have to put up was some seriously ugly syntax.</p>
+<pre class="fragment">bad     = 2000000000
+bad + 1 = 2000000001
+bad * 3 = 1705032704   // Smaller?
+bad * 4 = -589934592   // Negative?!!!  Overflowed into sign bit.
+
+good     = 2000000000
+good.add(BigInteger.ONE) = 2000000001
+good.multiply(BigInteger.valueOf(3)) = 6000000000
+good.multiply(BigInteger.valueOf(4)) = 8000000000</pre>
+
+
+<p><span class="leadin">Omitted features.</span>   <i>BigInteger</i> methods ignored
+in this summary: bit operations, random numbers, and prime testing.</p>
+
+<h3>Example</h3>
+<p>See <a href="http://www.leepoint.net/notes-java/data/numbers/60factorial.html">Example - Factorial</a> for a use of <code>BigInteger</code>.</p>
+
+<h2>Constructors and Methods</h2>
+<p>Assume</p>
+<pre class="example">BigInteger <i>bi</i>, <i>bi1</i>, <i>bi2</i>, <i>bi3</i>, <i>bi4</i>;
+BigInteger[] bia;  // array holding division result and remainder.
+String <i>s</i>; int  <i>i</i>; long <i>lng</i>; float <i>f</i>; double <i>d</i>;
+</pre>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="top"><td colspan="3" class="rowheader"><i>Constructors, constants, and static factory methods</i></td></tr>
+<tr valign="top"><td align="right"><code><i>bi</i>&nbsp;=&nbsp;</code></td><td><code>new BigInteger(<i>s</i>);</code></td><td>Create BigInteger with decimal value represented by decimal String <i>s</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi</i>&nbsp;=&nbsp;</code></td><td><code>BigInteger.ONE;</code></td><td>Predefined value 1.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi</i>&nbsp;=&nbsp;</code></td><td><code>BigInteger.ZERO;</code></td><td>Predefined value 0.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi</i>&nbsp;=&nbsp;</code></td><td><code>BigInteger.<b>valueOf</b>(<i>lng</i>);</code></td><td>Use this factory method to create BigIntegers from numeric expressions.  An <code>int</code> parameter will be automatically promoted to long.</td></tr>
+
+<tr valign="top"><td colspan="3" class="rowheader"><i>Arithmetic operations</i></td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>abs</b>();</code></td><td>Returns BigInteger absolute value.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>add</b>(<i>bi3</i>);</code></td><td>Returns sum of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>divide</b>(<i>bi3</i>);</code></td><td>Returns division of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right" nowrap="nowrap"><code><i>bia</i> =&nbsp;</code></td><td nowrap="nowrap"><code><i>bi2</i>.<b>divideAndRemainder</b>(<i>bi3</i>);</code></td><td>Returns array of two BigIntegers representing the result of division and remainder of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right" nowrap="nowrap"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>gcd</b>(<i>bi3</i>);</code></td><td>Returns greatest common divisor of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>max</b>(<i>bi3</i>);</code></td><td>Returns maximum of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>min</b>(<i>bi3</i>);</code></td><td>Returns minimum of <i>bi2</i> and <i>bi3</i></td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>mod</b>(<i>bi3</i>);</code></td><td>Returns remainder after dividing <i>bi2</i> by <i>bi3</i></td></tr>
+<!-- <tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>modInverse</b>(<i>bi3</i>);</code></td><td>????</td></tr> -->
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>multiply</b>(<i>bi3</i>);</code></td><td>Returns product of <i>bi2</i> and <i>bi3</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>pow</b>(<i>bi3</i>);</code></td><td>Returns <i>bi2</i> to the  <i>bi3</i> power.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>remainder</b>(<i>bi3</i>);</code></td><td>Returns remainder of dividing <i>bi2</i> by <i>bi3</i>. May be negative.</td></tr>
+<tr valign="top"><td align="right"><code><i>i</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>signum</b>();</code></td><td>-1 for neg numbers, 0 for zero, and +1 for positive.</td></tr>
+<tr valign="top"><td align="right"><code><i>bi1</i> =&nbsp;</code></td><td><code><i>bi2</i>.<b>subtract</b>(<i>bi3</i>);</code></td><td>Returns <i>bi2</i> - <i>bi3</i>.</td></tr>
+
+<tr valign="top"><td colspan="3" class="rowheader"><i>Conversion to other values</i></td></tr>
+<tr valign="top"><td align="right"><code><i>d</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>doubleValue</b>();</code></td><td>Returns double value equivalent of <i>bi</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>f</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>floatValue</b>();</code></td><td>Returns float value equivalent of <i>bi</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>i</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>intValue</b>();</code></td><td>Returns int value equivalent of <i>bi</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>lng</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>longValue</b>();</code></td><td>Returns long value equivalent of <i>bi</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>s</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>toString</b>();</code></td><td>Returns decimal string representation of <i>bi</i>.</td></tr>
+<tr valign="top"><td align="right"><code><i>s</i> =&nbsp;</code></td><td><code><i>bi</i>.<b>toString</b>(<i>i</i>);</code></td><td>Returns string representation of <i>bi</i> in radix <i>i</i>.</td></tr>
+
+<tr valign="top"><td colspan="3" class="rowheader"><i>Other</i></td></tr>
+<tr valign="top"><td align="right"><code><i>b</i> =&nbsp;</code></td><td><code><i>bi1</i>.<b>compareTo</b>(<i>bi2</i>);</code></td><td>Returns negative number if <i>bi1</i>&lt;<i>bi2</i>, 0 if <i>bi1</i>==<i>bi2</i>, or  positive number if <i>bi1</i>&gt;<i>bi2</i>.</td></tr>
+</tbody></table>
+
+
+<div class="footer">
+Copyleft 2003 <a href="http://www.fredosaurus.com/">Fred Swartz</a>
+<a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>, 
+Last update: 2003-11-02
+</div>
+</div>
+
+
+</body></html>

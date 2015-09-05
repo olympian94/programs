@@ -1,0 +1,49 @@
+import org.h2.Driver;
+import java.sql.*;
+public class Database
+{
+	public static void main(String[] args)
+	{
+		Connection conn =null;
+		Statement stmt =null;
+		try
+		{
+			Class.forName("org.h2.Driver");
+			conn=DriverManager.getConnection("jdbc:h2:~/mytest","sa","");
+			stmt=conn.createStatement();
+			String create;
+			create = "CREATE TABLE IF NOT EXISTS STUDENT (NAME TEXT NOT NULL, ID TEXT NOT NULL, CGPA FLOAT NOT NULL)";
+			stmt.executeUpdate(create);
+			conn.setAutoCommit(false);
+			String query;
+			query = "INSERT INTO STUDENT VALUES ('ABHISHEK','2013A7PS810G',9.81)";
+			stmt.addBatch(query);	
+			query = "INSERT INTO STUDENT VALUES ('AKSHAY','2013A5PS310G',8.41)";
+			stmt.addBatch(query);	
+			query = "INSERT INTO STUDENT VALUES ('VATAN','2013A3PS540G',9.52)";
+			stmt.addBatch(query);				
+			stmt.executeBatch();
+			conn.commit();
+		}catch(SQLException e)
+		{
+			System.out.println("Caught SQLException error 11");
+			e.printStackTrace();
+		}catch(Exception e)
+		{
+			System.out.println("Caught an Exception error 12");
+			e.printStackTrace();
+		}
+		finally{
+			try{
+				if(conn!=null)
+					conn.close();
+			}catch(SQLException e)
+			{
+			System.out.println("Caught SQLException error 13");
+			}catch(Exception e)
+			{
+			System.out.println("Caught an Exception error 14");
+			}
+		}
+	}
+}

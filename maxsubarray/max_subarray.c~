@@ -1,0 +1,95 @@
+//find max subarray in given array.
+//soln by divide and conquer
+#include<stdio.h>
+#include<stdlib.h>
+
+void max_cross_subarray(int *arr, int lo, int mid, int hi, int *lftid_ptr, int *rtid_ptr, int *maxsum);
+void max_subarray(int *arr, int low, int high, int *lo, int *hi, int *sum);
+int main()
+{
+	int N, *arr, j;
+	scanf("%d",&N);
+	arr=(int*)malloc(N*sizeof(int));
+	for(j=0; j<N; j++)
+		scanf("%d",&arr[j]);
+	int lo, hi, sum;
+	max_subarray(arr,0,N-1,&lo,&hi,&sum);
+//	max_cross_subarray(arr,0,(N-1)/2,N-1,&lftid,&rtid,&maxsum);
+	printf("\n");
+	for(j=lo; j<=hi; j++)
+		printf("%d ",arr[j]);
+	printf("\nSum=\t%d\n",sum);
+	
+	return 0;
+}
+
+void max_cross_subarray(int *arr, int lo, int mid, int hi, int *lftid_ptr, int *rtid_ptr, int *maxsum)
+{
+	int lftsum=0, sum=0, rtsum=0;
+	int lftid=-1, rtid=-1;
+	int j, k;
+	for(j=mid; j>=lo; j--)
+	{
+		sum+=arr[j];
+		if(sum>lftsum)
+		{
+			lftsum=sum;
+			lftid=j;
+		}
+	}
+	sum=0;
+	for(j=mid+1; j<=hi; j++)
+	{	
+		sum+=arr[j];
+		if(sum>rtsum)
+		{
+			rtsum=sum;
+			rtid=j;
+		}
+	}
+	*lftid_ptr=lftid;
+	*rtid_ptr=rtid;
+	*maxsum=(lftsum+rtsum);
+}
+
+void max_subarray(int *arr, int low, int high, int *lo, int *hi, int *sum)
+{
+	if(low==high){
+		*lo=low;
+		*hi=high;
+		*sum=arr[low];
+		return;
+	}
+	else{
+		int mid=(low+high)/2;
+		int lftlo, lfthi, lftsum;
+		int rtlo, rthi, rtsum;
+		int crosslo, crosshi, crosssum;
+
+		max_subarray(arr,low,mid,&lftlo,&lfthi,&lftsum);
+		max_subarray(arr,mid+1,high,&rtlo,&rthi,&rtsum);
+		max_cross_subarray(arr,low,mid,high,&crosslo,&crosshi,&crosssum);		
+
+		if(lftsum>=rtsum&&lftsum>=crosssum)
+		{
+			*lo=lftlo;
+			*hi=lfthi;
+			*sum=lftsum;
+			return;
+		}
+		else if(rtsum>=lftsum&&rtsum>=crosssum)
+		{
+			*lo=rtlo;
+			*hi=rthi;
+			*sum=rtsum;
+			return;
+		}
+		else{
+
+			*lo=crosslo;
+			*hi=crosshi;
+			*sum=crosssum;
+			return;
+		}
+	}
+}

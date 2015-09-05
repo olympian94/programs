@@ -1,0 +1,201 @@
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Javadoc Tutorial</title>
+</head>
+
+<body>
+
+<h2 align="center">Javadoc Tutorial</h2>
+<h4>Introduction</h4>
+<ul>
+  <li>Javadoc is a tool that generates html documentation (similar to the
+    reference pages at java.sun.com) from Javadoc comments in the code.&nbsp; In
+    this tutorial we will go over how to write basic Javadoc comments and how to
+    use features of Javadoc to generate html documentation.</li>
+</ul>
+<h4>Javadoc Comments</h4>
+<ul>
+  <li>Javadoc recognizes special comments&nbsp; <i><b>/** .... */ </b></i>which
+    are highlighted blue by default in Eclipse (regular
+    comments <b><i>//</i></b> and <b><i> /* ... */</i></b> are highlighted
+    green).</li>
+  <li>Javadoc allows you to attach descriptions to classes, constructors, fields,
+    interfaces and methods in the generated html documentation by placing
+    Javadoc comments directly before their declaration statements.&nbsp;&nbsp;
+  </li>
+  <li>Here's an example using Javadoc comments to describe a class, a field and
+    a constructor:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <pre>/** Class Description of MyClass */
+public class MyClass
+{
+	/** Field Description of myIntField */
+	public int myIntField;</pre>
+    <pre>	/** Constructor Description of MyClass() */
+	public MyClass()
+	{
+		// Do something ...
+	}
+}</pre>
+  </li>
+</ul>
+<h4>Javadoc Tags</h4>
+<ul>
+  <li><b><i>Tags</i></b> are keywords recognized by Javadoc which define the
+    type of information that follows.
+  </li>
+  <li>Tags come after the description (separated by a new line).</li>
+  <li>Here are some common pre-defined tags:
+    <ul>
+      <li><b><i>@author [author name]</i></b> - identifies author(s) of a class
+        or interface.</li>
+      <li><b><i>@version [version]</i></b> - version info of a class or
+        interface.</li>
+      <li><b><i>@param [argument name] [argument description]</i></b> - describes
+        an argument of method or constructor.</li>
+      <li><b><i>@return [description of return]</i></b> - describes data
+        returned by method (unnecessary for constructors and void methods).</li>
+      <li><b><i>@exception [exception thrown] [exception description]</i></b> -
+        describes exception thrown by method.</li>
+      <li><b><i>@throws [exception thrown] [exception description]</i></b> - same as
+        <i><b> @exception</b></i>.</li>
+    </ul>
+  </li>
+  <li>Here's an example with tags:<br>
+    <pre>/** Description of MyClass 
+ *
+ * @author John Doe
+ * @author Jane Doe
+ * @version 6.0z Build 9000 Jan 3, 1970.
+ */
+public class MyClass
+{
+	/** Description of myIntField */
+	public int myIntField;</pre>
+    <pre>	/** Description of MyClass() 
+	 * 
+	 * @throws MyException 		Description of myException
+	 */
+	public MyClass() throws myException
+	{
+		// Blah Blah Blah...
+	}
+	</pre>
+    <pre>	/** Description of myMethod(int a, String b)
+	 * 
+	 * @param a			Description of a
+	 * @param b			Description of b
+	 * @return			Description of c
+	 */
+	public Object myMethod(int a, String b)
+	{
+		Object c;
+		// Blah Blah Blah...
+		return c;
+	}
+}</pre>
+  </li>
+</ul>
+<h4>Javadoc Compilation</h4>
+<ul>
+  <li>To generate the html documentation, run Javadoc followed by the list of
+    source files, which the documentation is to be generated for, in the command
+    prompt (i.e. <b><i>Javadoc [files]</i></b>). </li>
+  <li>Javadoc also provides additional options which can be entered as switches
+    following the Javadoc command (i.e. <b><i>Javadoc [options] [files]</i></b>). </li>
+  <li>Here are some basic Javadoc options:
+    <ul>
+      <li><b><i>-author </i></b>- generated documentation will include a author
+        section</li>
+      <li><b><i>-classpath [path]</i></b> - specifies path to search for referenced
+        .class files.</li>
+      <li><b><i>-classpathlist [path];[path];...;[path]</i></b> - specifies a
+        list locations (separated by ";") to search for referenced
+        .class files.</li>
+      <li><b><i>-d [path]</i></b> - specifies where generated documentation will
+        be saved.</li>
+      <li><b><i>-private</i></b> - generated documentation will include private
+        fields and methods (only public and protected ones are included by
+        default).</li>
+      <li><b><i>-sourcepath [path]</i></b> - specifies path to search for .java
+        files to generate documentation form.</li>
+      <li><b><i>-sourcepathlist [path];[path];...;[path]</i></b> - specifies a
+        list locations (separated by ";") to search for .java files to
+        generate documentation form.</li>
+      <li><b><i>-version </i></b>- generated documentation will include a
+        version section</li>
+    </ul>
+  </li>
+  <li>Some examples
+    <ul>
+      <li>Basic example that generates and saves documentation to the current
+        directory (c:\MyWork) from A.java and B.java in current directory and
+        all .java files in c:\OtherWork\.
+        <ul>
+          <li><i>c:\MyWork&gt;<b> Javadoc A.java B.java c:\OtherWork\*.java&nbsp;</b></i></li>
+        </ul>
+      </li>
+      <li>More complex example with the generated documentation showing version
+        information and private members from all .java files in c:\MySource\ and
+        c:\YourSource\ which references files in c:\MyLib and saves it to
+        c:\MyDoc.
+        <ul>
+          <li>&nbsp;<i>c:\&gt;<b> Javadoc -version -private -d c:\MyDoc -sourcepathlist
+            c:\MySource;c:\YourSource\ -classpath c:\MyLib</b></i></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h4>Javadoc In Eclipse 3.0</h4>
+<ul>
+  <li>Eclipse can generate Javadoc comments for classes and methods.
+    <ol>
+      <li>Place the cursor in the text of class of method declaration.</li>
+      <li>Right Click-&gt;Source-&gt;Add Javadoc Comment.</li>
+      <li>Javadoc comments with appropriate tags are generated, but you
+        still have to write the descriptions.</li>
+    </ol>
+  </li>
+  <li>Eclipse can also compile Javadocs for projects/packages/classes in the
+    workspace.
+    
+	<ul>
+      <li>Set location of Javadoc command and export your project/package/class as a Javadoc:
+        <ol>
+          <li><b><i>File-&gt;Export</i></b>.</li>
+          <li>Select <b><i>Javadoc</i></b> and enter the path of <b><i>Javadoc.exe</i></b>,
+            i.e. <b><i>[Path of J2SE 1.5 SDK]\bin\javadoc.exe</i></b> (e.g. <b><i>c:\j2sdk1.5.0\bin\javadoc.exe</i></b>).</li>
+	<li>Also choose your export destination and click <b><i>Next</i></b>.</li>
+          <li>In the <b><i>Generate Javadoc Windo</i></b>w, select the project/package(s)/class(es)
+            you want to compile Javadocs for, select the visibility, and enter
+            the path of the destination folder.</li>
+          <li>Click <b><i>Finish</i></b>.</li>
+        </ol>
+	</li></ul>
+      </li>
+    
+  
+</ul>
+<h4>Javadoc References</h4>
+<ul>
+  <li>Javadoc is a powerful tool with many more features, for more information
+    check out the following links:
+    <ul>
+      <li>Sun's Javadoc Homepage: <a href="http://java.sun.com/j2se/javadoc/index.html">http://java.sun.com/j2se/javadoc/index.html</a></li>
+      <li>How to write Javadoc comments: <a href="http://java.sun.com/j2se/javadoc/writingdoccomments/index.html">http://java.sun.com/j2se/javadoc/writingdoccomments/index.html</a></li>
+      <li>How to use the Javadoc command: <a href="http://java.sun.com/j2se/1.4/docs/tooldocs/windows/javadoc.html">http://java.sun.com/j2se/1.5/docs/tooldocs/windows/javadoc.html</a></li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+
+<hr><small>From: http://www.ugrad.cs.ubc.ca/~cs310/labs/Collections/Javadoc%20Tutorial.html</small>
+
+
+
+
+</body></html>

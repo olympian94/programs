@@ -1,0 +1,3 @@
+#compile all
+gcc -c tester.c
+gcc -o driver tester.o storage.o

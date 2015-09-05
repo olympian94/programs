@@ -1,0 +1,24 @@
+#include<stdlib.h>
+#include<stdio.h>
+
+int main(int argc, char*argv[])
+{
+	int j, k, r=1;
+	int noOfArrays=100;
+	int count=0;
+	//no of arrays to be printed
+	printf("\n%d",noOfArrays);
+	for(k=10; k<=1000; k+=10)
+	{	
+		count++;
+		printf("\n%d\n",k);
+		for(j=0; j<k; j++)
+		{
+			srand(r+j);
+			r=rand()%100+1;
+			printf("%d ",r);
+		}
+	}	
+	printf("\n%d\n",count);	
+	return 0;
+}

@@ -1,0 +1,18 @@
+
+->a (COLOR=W) (disc=0) (fin=0)	b (COLOR=W) (disc=0) (fin=0)	
+->b (COLOR=W) (disc=0) (fin=0)	e (COLOR=W) (disc=0) (fin=0)	f (COLOR=W) (disc=0) (fin=0)	c (COLOR=W) (disc=0) (fin=0)	
+->c (COLOR=W) (disc=0) (fin=0)	d (COLOR=W) (disc=0) (fin=0)	g (COLOR=W) (disc=0) (fin=0)	
+->d (COLOR=W) (disc=0) (fin=0)	c (COLOR=W) (disc=0) (fin=0)	h (COLOR=W) (disc=0) (fin=0)	
+->e (COLOR=W) (disc=0) (fin=0)	a (COLOR=W) (disc=0) (fin=0)	f (COLOR=W) (disc=0) (fin=0)	
+->f (COLOR=W) (disc=0) (fin=0)	g (COLOR=W) (disc=0) (fin=0)	
+->g (COLOR=W) (disc=0) (fin=0)	h (COLOR=W) (disc=0) (fin=0)	f (COLOR=W) (disc=0) (fin=0)	
+->h (COLOR=W) (disc=0) (fin=0)	h (COLOR=W) (disc=0) (fin=0)	
+
+->a (COLOR=W) (disc=0) (fin=0)	e (COLOR=W) (disc=0) (fin=0)	
+->b (COLOR=W) (disc=0) (fin=0)	a (COLOR=W) (disc=0) (fin=0)	
+->c (COLOR=W) (disc=0) (fin=0)	b (COLOR=W) (disc=0) (fin=0)	d (COLOR=W) (disc=0) (fin=0)	
+->d (COLOR=W) (disc=0) (fin=0)	c (COLOR=W) (disc=0) (fin=0)	
+->e (COLOR=W) (disc=0) (fin=0)	b (COLOR=W) (disc=0) (fin=0)	
+->f (COLOR=W) (disc=0) (fin=0)	b (COLOR=W) (disc=0) (fin=0)	e (COLOR=W) (disc=0) (fin=0)	g (COLOR=W) (disc=0) (fin=0)	
+->g (COLOR=W) (disc=0) (fin=0)	c (COLOR=W) (disc=0) (fin=0)	f (COLOR=W) (disc=0) (fin=0)	
+->h (COLOR=W) (disc=0) (fin=0)	d (COLOR=W) (disc=0) (fin=0)	g (COLOR=W) (disc=0) (fin=0)	h (COLOR=W) (disc=0) (fin=0)	

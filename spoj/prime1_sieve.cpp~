@@ -1,0 +1,51 @@
+#include<cstdio.h>
+#include<iostream>
+class Node
+{
+	private:
+	int marked;
+	int val;
+	Node *next;
+	public:
+	Node()
+	{	marked=0;
+		next=NULL;
+		val=0;
+	}
+	void setNext(Node* nxt)
+	{	next=nxt;
+	}
+	void setVal(int v)
+	{	val=v;
+	}
+	void setVal(int v, int m)
+	{
+		if(m==0||m==1)
+		{
+			val=v;
+			marked=m;
+		}
+	}
+	Node* getNext()
+	{	return next;
+	}
+	int getVal()
+	{	return val;
+	}
+	int getMarked()
+	{	return marked;
+	}
+	
+}
+class LinkedList
+{
+	private:
+	Node head;
+	int numNodes;
+	public:
+	LinkedList()
+	{
+		head=(Node*)malloc(sizeof(Node));
+		numNodes=0;
+	}
+}

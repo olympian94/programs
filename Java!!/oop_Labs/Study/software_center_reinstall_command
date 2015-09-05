@@ -1,0 +1,1 @@
+sudo apt-get update; sudo apt-get --purge --reinstall install software-center software-properties-common software-properties-gtk

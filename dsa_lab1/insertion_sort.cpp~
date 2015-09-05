@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<malloc.h>
+long int swaps=0, comps=0;
+long int compare(long int a, long int b)
+{
+	comps++;
+	return a<b?-1:a==b?0:1;
+}
+
+void insertion_sort(long int *arr, long int size);
+long int main()
+{
+	long int *arr, N;
+	scanf("%ld",&N);
+	arr=(long int*)malloc(N*sizeof(long int));
+	for(long int j=0; j<N; j++)
+		scanf("%ld",&arr[j]);
+	prlong intf("\n");
+	for(long int j=0; j<N; j++)
+		prlong intf("%ld ",arr[j]);
+	prlong intf("\n");
+	free(arr);
+	return 0;
+}
+
+void insertion_sort(long int *arr, long int N)
+{
+	long int k, key;
+	for(long int j=1; j<N; j++)
+	{
+		key=arr[j];
+		k=j-1;
+		while(k>=0&&arr[k]<key)
+		{
+			arr[k+1]=arr[k];
+			k--;
+		}
+		arr[k+1]=key;
+	}
+
+}

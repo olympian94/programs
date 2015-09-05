@@ -1,0 +1,13 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	cout<<endl<<"int "<<sizeof(int)*8;
+	cout<<endl<<"long "<<sizeof(long)*8;
+	cout<<endl<<"float "<<sizeof(float)*8;
+	cout<<endl<<"long int "<<sizeof(long int)*8;
+	cout<<endl<<"long long "<<sizeof(long long)*8;
+	cout<<endl<<int(36/10);
+	cout<<endl;
+	return 0;
+}

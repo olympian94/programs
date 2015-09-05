@@ -1,0 +1,24 @@
+#include<cstdio.h>
+#include<iostream.h>
+int main()
+{
+	int T;
+	while(T--)
+	{
+		int N;
+		int L[100000], R[100000];
+		scanf("%d",&L[j]);
+		scanf("%d",&R[j]);	
+		int ans=1, tmp1, tmp2;
+		tmp2=R[0];
+		for(int j=1; j<N; j++)
+		{
+			scanf("%d",&L[j]);
+			scanf("%d",&R[j]);
+			tmp1=L[j];
+			if(tmp1>tmp2)
+				ans++;
+			tmp2=R[j];			
+		}
+	}
+}

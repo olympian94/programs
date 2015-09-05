@@ -1,0 +1,33 @@
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+int main()
+{
+	int testCases;
+	scanf("%d",&testCases);
+	long long N, K, *A, *B, max, temp;
+	while(testCases--)
+	{
+		scanf("%lf",&N);
+		scanf("%lu",&K);
+		A=(long long*)malloc(N*sizeof(long long));
+		B=(long long*)malloc(N*sizeof(long long));
+		//take input Ai- time
+		for(int k=0; k<N; k++)
+			scanf("%ld",&A[k]);
+		//take input Bi- value
+		//calc max profit
+		max=0;
+		for(int l=0; l<N; l++){
+			scanf("%ld",&B[l]);
+			temp=(K/A[l])*B[l]; 
+			if(temp>max)
+				max=temp;
+		}
+		printf("%ld\n",max);
+		free(A);
+		free(B);
+	}
+	return 0;
+}

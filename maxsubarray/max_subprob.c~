@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void max_subarray(int *, int, int);
+void check_boundary(int *,int,int,int);
+
+void max_subarray(int *arr, int p , int r)
+{
+	if(p<r)
+	{
+		int q = (p+r)/2;
+		max_subarray(arr,p,q);
+		max_subarray(arr,q+1,r);
+		check_boundary(arr,p,r);		
+	}
+}
+

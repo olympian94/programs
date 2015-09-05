@@ -1,0 +1,6 @@
+struct dll
+{
+	int val;
+
+}
+

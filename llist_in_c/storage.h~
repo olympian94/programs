@@ -1,0 +1,7 @@
+plist createList(int);
+plist resize(plist);
+plist insertAtHead(plist,int);
+plist insertAtTail(plist,int);
+int removeFromTail(plist);
+int removeFromHead(plist);
+void printList(plist);

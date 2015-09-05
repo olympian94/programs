@@ -1,0 +1,10 @@
+import testpack.*;
+class PackageTester
+{
+	public static void main(String[] args)
+	{
+		Person obj = new Person();
+		obj.set("Abhishek",19);
+		System.out.println("name : " +obj.getname());		
+	}
+}
