@@ -8,12 +8,13 @@
 #define SHM_SIZE 1024  //1k shared memory segment
 int main(int argc, char *argv[])
 {
+	pid_t pid;
 	key_t key;
 	int shmid;
 	char *data;
 	int mode;
 	//make the key
-	if((key = ftok("labq.c",'R')) == -1)
+	if((key = ftok("shmdemo.c",'R')) == -1)
 	{
 		perror("ftok");
 		exit(1);
@@ -24,6 +25,11 @@ int main(int argc, char *argv[])
 		perror("shmget");
 		exit(1);
 	}
+
+	int i=0;
+	for(i=0; i<2; i++)
+		pid=fork();
+
 	//attach to the segment to get a ptr 
 	data = shmat(shmid, (void*)0,0);
 	if(data == (char*)(-1))
@@ -47,5 +53,6 @@ int main(int argc, char *argv[])
 		perror("shmdt");
 		exit(1);
 	}
+
 	return 0;
 }

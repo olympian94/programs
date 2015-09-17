@@ -32,7 +32,7 @@ public class lab1 extends JFrame{
 			buttonA.addActionListener(new ActionListener() 
         	{
 				public void actionPerformed(ActionEvent e)
-            	{
+            	{	
 	                total_no_of_clicks[0]++;
                 	buttonA.setText("A"+"   clicks = "+Integer.toString(total_no_of_clicks[0]));
 					String prefix = textField.getText();
