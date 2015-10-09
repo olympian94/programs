@@ -1,6 +1,0 @@
-struct dll
-{
-	int val;
-
-}
-
